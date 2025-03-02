@@ -3,25 +3,19 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 16  # Adjust based on your Node.js version
+      nodejs: 16
     commands:
       - echo "Installing dependencies..."
       - cd web-tier && npm install
       - cd ../app-tier && npm install
+
   build:
     commands:
       - echo "Building the React frontend..."
       - cd ../web-tier && npm run build
-      - echo "Zipping artifacts..."
-      - cd ../web-tier && zip -r web-tier.zip build/
-      - cd ../app-tier && zip -r app-tier.zip .
-  post_build:
-    commands:
-      - echo "Uploading artifacts to S3..."
-      - aws s3 cp web-tier/web-tier.zip s3://bukettt12343/
-      - aws s3 cp app-tier/app-tier.zip s3://bukettt12343/
+      - echo "Packaging application..."
+      - cd ../ && zip -r deploy.zip web-tier/ app-tier/
 
 artifacts:
   files:
-    - web-tier.zip
-    - app-tier.zip
+    - deploy.zip
