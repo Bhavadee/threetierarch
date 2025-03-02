@@ -3,16 +3,25 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 16  # Ensure the correct Node.js version
+      nodejs: 16  # Use Node.js 16
     commands:
-      - cd web-tier
-      - npm ci  # Faster & more reliable than npm install
+      - echo "Installing dependencies..."
+      - cd application-code/web-tier
+      - npm install
 
   build:
     commands:
-      - npm run build  # Builds your React app
+      - echo "Building React application..."
+      - npm run build
+
+  post_build:
+    commands:
+      - echo "Packaging build files for deployment..."
+      - cd build
+      - zip -r web-tier.zip .  # Create ZIP of built React app
+      - echo "Uploading web-tier.zip to S3..."
+      - aws s3 cp web-tier.zip s3://bukett12343/
 
 artifacts:
   files:
-    - '**/*'
-  base-directory: web-tier/build
+    - application-code/web-tier/build/**  # Deploy the built React app
