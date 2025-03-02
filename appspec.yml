@@ -1,0 +1,29 @@
+version: 0.0
+os: linux
+
+files:
+  - source: web-tier.zip
+    destination: /home/ec2-user/web-tier
+  - source: app-tier.zip
+    destination: /home/ec2-user/app-tier
+
+permissions:
+  - object: /home/ec2-user/web-tier
+    pattern: "**"
+    owner: ec2-user
+    mode: 755
+  - object: /home/ec2-user/app-tier
+    pattern: "**"
+    owner: ec2-user
+    mode: 755
+
+hooks:
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 300
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: ec2-user
