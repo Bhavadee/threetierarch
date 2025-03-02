@@ -20,7 +20,7 @@ phases:
       - cd build
       - zip -r web-tier.zip .  # Create ZIP of built React app
       - echo "Uploading web-tier.zip to S3..."
-      - aws s3 cp web-tier.zip s3://bukett12343/
+      - aws s3 cp web-tier.zip s3://bukettt12343/
 
 artifacts:
   files:
