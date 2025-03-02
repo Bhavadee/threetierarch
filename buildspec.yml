@@ -3,19 +3,16 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 16
+      nodejs: 16  # Ensure the correct Node.js version
     commands:
-      - echo "Installing dependencies..."
-      - cd web-tier && npm install
-      - cd ../app-tier && npm install
+      - cd web-tier
+      - npm ci  # Faster & more reliable than npm install
 
   build:
     commands:
-      - echo "Building the React frontend..."
-      - cd ../web-tier && npm run build
-      - echo "Packaging application..."
-      - cd ../ && zip -r deploy.zip web-tier/ app-tier/
+      - npm run build  # Builds your React app
 
 artifacts:
   files:
-    - deploy.zip
+    - '**/*'
+  base-directory: web-tier/build
